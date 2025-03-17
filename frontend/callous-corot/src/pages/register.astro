@@ -1,0 +1,41 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout>
+	<h1>Sign up page</h1>
+    <form action="" method="post" id="register">
+        <label for="username">Username:</label>
+        <input required type="text" id="username" name="username">
+        <label for="password">Password:</label>
+        <input required type="password" id="password" name="password">
+        <label for="firstname">First name:</label>
+        <input required type="text" name="firstname" id="firstname">
+        <label for="lastname">Last name:</label>
+        <input required type="text" name="lastname" id="lastname">
+        <button type="submit">Sign up</button>
+    </form>
+</Layout>
+
+<script>
+    const form = document.querySelector('#register') as HTMLFormElement
+    form.addEventListener('submit', async (e)=>{
+        e.preventDefault()
+        const formData = new FormData(e.target as HTMLFormElement)
+        const formObject = Object.fromEntries(formData.entries())
+
+        const res = await fetch(`http://localhost:4000/signup`,{
+            method: "post",
+            credentials: "include",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body: JSON.stringify(formObject)
+        })
+
+        if(res.ok){
+            alert("User signed up")
+            window.location.href = "/login"
+        }
+    })
+</script>
