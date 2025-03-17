@@ -11,4 +11,5 @@ userRouter.get('/check-auth', user_controller_1.default.getUserByUsername);
 userRouter.post('/login', user_controller_1.default.logInUser);
 userRouter.post('/signup', user_controller_1.default.addUser);
 userRouter.get('/logout', user_controller_1.default.logout);
+git;
 exports.default = userRouter;

@@ -1,0 +1,52 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout>
+    <h1>Protected Page</h1>
+    <h2>Profile</h2>
+    <p id="username">Username</p>
+    <p id="firstname">First Name</p>
+    <p id="lastname">Last Name</p>
+    <button id="logout">Log out</button>
+</Layout>
+
+<script>
+    document.addEventListener('DOMContentLoaded', async () => {
+        const data = await getData() 
+        const username = document.querySelector('#username') as HTMLParagraphElement
+        const firstname = document.querySelector('#firstname') as HTMLParagraphElement
+        const lastname = document.querySelector('#lastname') as HTMLParagraphElement
+
+        username.innerHTML = `<b>Username</b> ${data.username}`
+        firstname.innerHTML = `<b>First name</b> ${data.firstname}`
+        lastname.innerHTML = `<b>Last name</b> ${data.lastname}`
+    })
+    
+    const logoutBtn = document.querySelector('#logout') as HTMLButtonElement
+
+    logoutBtn.addEventListener('click', async () => {
+        await logout()
+        alert('Logging out...')
+        window.location.href = "/"
+    })
+
+    const getData = async() =>{
+        const res = await fetch(`http://localhost:4000/check-auth`,{
+            method: "get",
+            credentials: "include"
+        })
+        if(!res.ok){
+            alert("User is not logged in !")
+            window.location.href = "/"
+        }
+        return  await res.json()
+    }
+
+    const logout = async() =>{
+        await fetch(`http://localhost:4000/logout`,{
+            method:"get",
+            credentials: "include"
+        })
+    }
+</script>
